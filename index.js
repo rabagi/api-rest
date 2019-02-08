@@ -2,6 +2,7 @@
 
 const express = require('express')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -35,6 +36,15 @@ app.delete('/api/producto/:id', (req, res) => {
 
 })
 
-app.listen(port, ()=> {
-	console.log(`Api-Res en http://localhost:${port}`)
-})   
+mongoose.connect('mongodb://localhost:27017/shop', { useNewUrlParser: true }, (err, res) => {
+	if(err) {
+		return console.log(`Error al conectar la bd: ${err}`)
+	}
+
+		
+	console.log('conexion establecida...')
+	
+	app.listen(port, ()=> {
+		console.log(`Api-Res en http://localhost:${port}`)
+	})   
+})
