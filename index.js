@@ -17,12 +17,25 @@ app.get('/api/producto', (req, res) => {
 	//deprecated
 	//res.send(200, {productos: []})
 
-	///good
-	res.status(200).send({productos: []})
+	Producto.find({}, (err, prod) => {
+		if(err) return res.status(500).send({ message: `Error al realizar peticion ${err}`})
+		if(!prod) return res.status(404).send({ message: `No existen productos`})
+
+		///good
+		res.status(200).send({prod})
+	})
+	
 })
 
 app.get('/api/producto/:id', (req, res) => {
+	let id = req.params.id
 
+	Producto.findById(id, (err, prod) => {
+		if(err) return res.status(500).send({ message: `Error al realizar peticion ${err}`})
+		if(!prod) return res.status(404).send({ message: `El producto no existe`})
+
+		res.status(200).send({ producto: prod})
+	})
 })
 
 app.post('/api/producto', (req, res) => {
