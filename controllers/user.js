@@ -18,8 +18,18 @@ function singUp (req, res){
 }
 
 function signIn (req, res){
+	User.find({ email: req.body.email }, (err, user) => {
+		if(err) return res.status(500).send({ message: err})
+		if(!user) return res.status(404).send({ message: 'No existe usuario'})
 
-}
+		req.user = usuario
+		res.status(200).send({
+			message: 'Te has logueado correctamente',
+			token: service.createToken(user),
+		})
+
+	})
+} 
 
 module.exports = {
 	singUp,
